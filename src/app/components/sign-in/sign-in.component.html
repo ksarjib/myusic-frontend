@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col s8 offset-s2">
+        <div class="card">
+            <div class="sm-jumbotron center-align">
+                <h2>Login</h2>
+            </div>
+            <form class="col s12 white" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <label for="email">Username</label>
+                    <input type="text" formControlName="email" class="form-control" />
+                    <div *ngIf="submitted && !loginForm.get('email')?.valid" class="invalid-feedback">
+                        <div>Email is required</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && !loginForm.get('password')?.valid }" />
+                    <div *ngIf="submitted && !loginForm.get('password')?.valid" class="invalid-feedback">
+                        <div>Password is required</div>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="input-field col s12">
+                        <button class="btn-large btn-submit" type="submit"
+                            [disabled]="!signupForm.valid">Submit</button>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <button [disabled]="loading" class="btn btn-primary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Login
+                    </button>
+                    <a routerLink="/register" class="btn btn-link">Register</a>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>

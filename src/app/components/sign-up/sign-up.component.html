@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col s8 offset-s2">
+        <div class="card">
+            <div class="sm-jumbotron center-align">
+                <h2>Registration</h2>
+                <h3>Sign up as</h3>
+                <mat-button-toggle-group [(ngModel)]="categorySelected" aria-label="Font Style">
+                    <mat-button-toggle value="1">User</mat-button-toggle>
+                    <mat-button-toggle value="2">Artist</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+            <form class="col s12 white" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+                <div class=" row">
+                    <div class="input-field col s6">
+                        <input type="text" name="FName" formControlName="firstName">
+                        <label>First</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" name="LName" formControlName="lastName">
+                        <label>Last</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="password" name="Password" formControlName="password">
+                        <label>Password</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="password" name="ConfirmPassword" formControlName="confirmPassword">
+                        <label>Confirm Password</label>
+                    </div>
+
+                    <div class="input-field col s6">
+                        <input type="email" name="Email" formControlName="email">
+                        <label>Email</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="date" value="2018-07-22" name=" DateOfBirth" formControlName="dob">
+                        <label>Date Of Birth</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" name="UserName" formControlName="username">
+                        <label>UserName</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <!-- <input type="text" name="Gender" formControlName="gender" required>
+                        <label>Gender</label> -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Gender</mat-label>
+                            <mat-select formControlName="gender">
+                                <mat-option *ngFor="let g of genders" [value]="g">
+                                    {{g.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <button class="btn-large btn-submit" type="submit">Submit</button>
+                        <!-- [disabled]="!signupForm.valid" -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
