@@ -56,7 +56,14 @@ export class SignInComponent implements OnInit {
           (data) => {
             console.log(data);
             console.log("User is logged in");
-            this.router.navigateByUrl('/');
+            let currentUser = this.authenticationService.getCurrentUser();
+            console.log(currentUser);
+            let role = currentUser.payload.role;
+            if (role == 1) {
+              this.router.navigateByUrl('/artist/dashboard');
+            } else {
+              this.router.navigateByUrl('/user/dashboard');
+            }
           }
         );
     }

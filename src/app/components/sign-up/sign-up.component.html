@@ -5,8 +5,8 @@
                 <h2>Registration</h2>
                 <h3>Sign up as</h3>
                 <mat-button-toggle-group [(ngModel)]="categorySelected" aria-label="Font Style">
-                    <mat-button-toggle value="1">User</mat-button-toggle>
-                    <mat-button-toggle value="2">Artist</mat-button-toggle>
+                    <mat-button-toggle value="0">User</mat-button-toggle>
+                    <mat-button-toggle value="1">Artist</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
             <form class="col s12 white" [formGroup]="signupForm" (ngSubmit)="onSubmit()">

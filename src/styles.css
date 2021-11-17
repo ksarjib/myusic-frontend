@@ -7,6 +7,10 @@ div.sm-jumbotron{
     color: #fff;
 }
 
+#nav {
+    background-color: gray;
+}
+
 button.btn-submit{
     background-color: #38547b;
     color: #fff;
@@ -20,13 +24,14 @@ button.btn-submit:focus, button.btn-submit:hover {
 img.image-header {
     /* max-height:100%; max-width:100%; */
     width: 300px;
-    height: 150px;
+    height: 135px;
     text-align: center;
 }
 
 .navbar-brand {
     display: flex;
     width: 100%;
+    height: 150px;
     justify-content: center;
 }
 

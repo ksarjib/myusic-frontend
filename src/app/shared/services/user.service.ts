@@ -5,20 +5,19 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-
-const base_url: string = '/auth'
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   id: string = '';
   isLogin = false;
+  base_url: string = '/auth';
+  userType: number;
 
-  roleAs: string;
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   // private currentUserSubject: BehaviorSubject<User>;
   // public currentUser: Observable<User>;
   constructor(private http: HttpClient, private route: ActivatedRoute) {
@@ -28,18 +27,39 @@ export class AuthenticationService {
 
   login(email: string, password: string) {
     console.log('user ' + email + 'trying to log in');
-    return this.http.post(GlobalConstants.API_ENDPOINT + base_url + '/login', { email: email, password: password }, httpOptions)
+    return this.http.post(GlobalConstants.API_ENDPOINT + this.base_url + '/login', { email: email, password: password }, this.httpOptions)
       .pipe(map(user => {
-        this.isLogin = true;
-        console.log(user);
-        this.roleAs = "artist";
-        localStorage.setItem('STATE', 'true');
-        localStorage.setItem('ROLE', this.roleAs);
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        // this.currentUserSubject.next(user);
+        this.saveUserDataToStorage(user);
         return user;
       }));
+  }
+
+  register(userBody: any) {
+    console.log(userBody);
+    return this.http.post(GlobalConstants.API_ENDPOINT + this.base_url + '/register', userBody, this.httpOptions)
+      .pipe(map((user: any) => {
+        console.log('Trying to register');
+        console.log(user);
+        this.saveUserDataToStorage(user);
+        return user;
+      }));
+  }
+
+  saveUserDataToStorage(user: any) {
+    this.isLogin = true;
+    let userType = user?.payload?.role;
+    localStorage.setItem('STATE', 'true');
+    localStorage.setItem('ROLE', userType);
+    // store user details and jwt token in local storage to keep user logged in between page refreshes
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    console.log(`user type ${userType}`);
+    if (userType == 1) {
+      console.log('the user is an artist');
+      console.log(user);
+      localStorage.setItem('stageName', user?.payload.username);
+    }
+    console.log('Current user');
+    console.log(localStorage.getItem('currentUser'));
   }
   isLoggedIn() {
     const loggedIn = localStorage.getItem('STATE');
@@ -52,20 +72,45 @@ export class AuthenticationService {
 
   getRole() {
     // this.roleAs = localStorage.getItem('ROLE');
-    return this.roleAs;
+    return this.userType;
   }
 
   getCurrentUser() {
-    return localStorage.getItem('currentUser');
+    return this.getParsedUserFromStorage();
   }
-  // logOut(id: string) {
-  //   // this.fetchIdFromQueryParams();
-  //   return this.http.delete(GlobalConstants.API_ENDPOINT + base_url + '/' + id, httpOptions);
-  // }
+
+  getParsedUserFromStorage() {
+    let stringUser = localStorage.getItem('currentUser');
+    return JSON.parse(stringUser || '');
+  }
+
+  getStageName() {
+    return localStorage.getItem('stageName');
+  }
+
+  getCurrentUserEmail() {
+    console.log(this.getCurrentUser());
+    return this.getCurrentUser().payload.email;
+  }
+
+  getCurrentUserUsername() {
+    console.log(this.getCurrentUser());
+    return this.getCurrentUser().payload.username;
+  }
+
+  getAccessToken() {
+    console.log(this.getCurrentUser());
+    return this.getCurrentUser().payload.access_token;
+  }
+
+  getCurrentUserId() {
+    console.log(this.getCurrentUser());
+    return this.getCurrentUser().payload._id;
+  }
+
   logout() {
-    // remove user from local storage to log user out
+    localStorage.setItem('STATE', 'false');
     localStorage.removeItem('currentUser');
-    // this.currentUserSubject.next(null);
   }
 
   ngOnInit() {

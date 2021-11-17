@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SnackBarService } from 'src/app/shared/services/snackbar.service';
+import { AuthenticationService } from 'src/app/shared/services/user.service';
 import { User } from '../../models/user';
 
 interface Gender {
@@ -23,22 +26,14 @@ export class SignUpComponent implements OnInit {
     { id: 3, value: 'Other' },
   ];
   // userRegistrationForm: any;
-  categories: any = [{ id: 1, name: 'Artist' }, { id: 1, name: 'Normal User' }];
-  constructor(private formBuilder: FormBuilder) { }
+  categories: any = [{ id: 1, name: 'Artist' }, { id: 0, name: 'Normal User' }];
+  constructor(private formBuilder: FormBuilder,
+    private snackbar: SnackBarService,
+    private router: Router,
+    private authService: AuthenticationService) { }
 
-  categorySelected: number = 1;
-
-  // userRegistrationForm: FormGroup = new FormGroup({
-  //   firstName: new FormControl('', Validators.required),
-  //   lastName: new FormControl('', Validators.required),
-  //   email: new FormControl('', Validators.required),
-  //   password: new FormControl('', Validators.required),
-  //   confirmPassword: new FormControl('', Validators.required),
-  //   gender: new FormControl('', Validators.required),
-  //   username: new FormControl('', Validators.required),
-  //   dob: new FormControl('', Validators.required),
-  // });
-
+  //category 0 = normal user, category 1 = artist
+  categorySelected: number = 0;
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -53,12 +48,42 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit(): false | undefined {
+
+    let userBody = {
+      fName: this.signupForm?.value?.firstName,
+      lName: this.signupForm?.value?.lastName,
+      email: this.signupForm?.value?.email,
+      password: this.signupForm?.value?.password,
+      gender: this.signupForm?.value?.gender?.id,
+      username: this.signupForm?.value?.username,
+      dob: this.signupForm?.value?.dob,
+      category: this.categorySelected
+    }
+
     this.isSubmitted = true;
     // this.user = { ...this.userRegistrationForm?.value, category: this.category }
     if (!this.signupForm.valid) {
+      this.snackbar.showMessage('All fields mandatory except username', '');
       return false;
     } else {
-      alert(JSON.stringify(this.categorySelected))
+      if (this.signupForm.value?.password !== this.signupForm.value?.confirmPassword) {
+        //Confirm password doesn't match
+        this.snackbar.showMessage('Confirm password doesn\'t match', '');
+        console.log('The passwords dont match');
+        return false;
+      }
+      this.authService.register(userBody).subscribe(data => {
+        console.log(JSON.stringify(this.categorySelected));
+        console.log(data);
+        let currentUser = this.authService.getCurrentUser();
+        let role = currentUser.payload.role;
+        if (role == 0) {
+          this.router.navigateByUrl('/user/dashboard');
+        } else {
+          console.log('navigate to /artist/dashboard');
+          this.router.navigateByUrl('/artist/dashboard');
+        }
+      });
       return
     }
 
