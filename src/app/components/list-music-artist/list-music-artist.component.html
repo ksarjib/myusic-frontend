@@ -1,0 +1,50 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- Position Column -->
+    <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let element">{{element.title}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="stageName">
+        <th mat-header-cell *matHeaderCellDef>Artist Stage Name</th>
+        <td mat-cell *matCellDef="let element">{{element.stageName}}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element">{{element.description}}</td>
+    </ng-container>
+
+    <!-- Genre Column -->
+    <ng-container matColumnDef="genre">
+        <th mat-header-cell *matHeaderCellDef>Genre</th>
+        <td mat-cell *matCellDef="let element">{{element.genre}}</td>
+    </ng-container>
+
+    <!-- Genre Column -->
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Genre</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="symbol">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+            <audio controls>
+                <source type="audio/mpeg" [src]="fileSource">
+            </audio>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<button (click)="play('music-1637021871640')">Play 1</button>
+<button (click)="play('music-1637022829475')">Play 2</button>

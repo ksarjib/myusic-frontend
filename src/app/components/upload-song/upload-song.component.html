@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col s8 offset-s2">
+        <div class="card">
+            <form class="col s12 white" [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <label for="title">Title</label>
+                    <input type="text" formControlName="title" class="form-control" />
+                    <div *ngIf="submitted && !uploadForm.get('title')?.valid" class="invalid-feedback">
+                        <div>Title is required</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="description">Description</label>
+                    <input type="text" formControlName="description" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && !uploadForm.get('description')?.valid }" />
+                    <div *ngIf="submitted && !uploadForm.get('description')?.valid" class="invalid-feedback">
+                        <div>Description is required</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="genre">Genre</label>
+                    <input type="text" formControlName="genre" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && !uploadForm.get('genre')?.valid }" />
+                    <div *ngIf="submitted && !uploadForm.get('genre')?.valid" class="invalid-feedback">
+                        <div>Description is required</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="music">File: </label>
+                    <input type="file" formControlName="music" class="form-control" (change)='uploadMusic($event)'>
+                    <div *ngIf="submitted && !uploadForm.get('music')?.valid" class="invalid-feedback">
+                        <div>Choose one music file to upload</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <button [disabled]="loading" class="btn btn-primary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Upload
+                    </button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
