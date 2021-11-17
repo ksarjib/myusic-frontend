@@ -23,8 +23,15 @@ export class SignInComponent implements OnInit {
     // private alertService: AlertService
   ) {
     // redirect to home if already logged in
-    // if (this.authenticationService.currentUserValue) {
-    //   this.router.navigate(['/']);
+
+    console.log('Trying to go to login screen????')
+      if (localStorage.getItem('currentUser')) {
+      if (this.authenticationService.getRole() == 0)
+        this.router.navigate(['/user/dashboard']);
+      else
+        this.router.navigate(['/artist/dashboard']);
+
+    }
     // }
   }
 
