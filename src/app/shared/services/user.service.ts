@@ -81,7 +81,7 @@ export class AuthenticationService {
 
   getParsedUserFromStorage() {
     let stringUser = localStorage.getItem('currentUser');
-    return JSON.parse(stringUser || '');
+    return stringUser ? JSON.parse(stringUser) : null;
   }
 
   getStageName() {
@@ -90,22 +90,22 @@ export class AuthenticationService {
 
   getCurrentUserEmail() {
     console.log(this.getCurrentUser());
-    return this.getCurrentUser().payload.email;
+    return this.getCurrentUser()?.payload?.email;
   }
 
   getCurrentUserUsername() {
     console.log(this.getCurrentUser());
-    return this.getCurrentUser().payload.username;
+    return this.getCurrentUser()?.payload?.username;
   }
 
   getAccessToken() {
     console.log(this.getCurrentUser());
-    return this.getCurrentUser().payload.access_token;
+    return this.getCurrentUser()?.payload?.access_token;
   }
 
   getCurrentUserId() {
     console.log(this.getCurrentUser());
-    return this.getCurrentUser().payload._id;
+    return this.getCurrentUser()?.payload?._id;
   }
 
   logout() {

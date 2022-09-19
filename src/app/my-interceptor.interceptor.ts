@@ -15,7 +15,8 @@ export class MyInterceptorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     console.log('I just intercepted your request ');
-    let token = this.authService.getAccessToken()
+    let token = this.authService.getAccessToken();
+
     console.log(`Here is your token ${token}`);
     // const token_found = true; // check localStorage
     if (token) {
