@@ -1,3 +1,3 @@
 export class GlobalConstants {
-    public static readonly API_ENDPOINT: string = 'http://localhost:3002';
+    public static readonly API_ENDPOINT: string = 'https://myusic-backend-pi28bma8t-ksarjib.vercel.app';
 }
